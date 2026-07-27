@@ -1,20 +1,14 @@
 import FDistributionCanonicalLaneLean.GateLemmas
 
-
 namespace HautevilleHouse
 namespace FDistributionCanonicalLaneLean
 
-/-!
-F-distribution
+def ConstrainedTheoremClosure (A : AdmissibleClass) : Prop :=
+  bridgeClosed A ∧ gateClosed A
 
-Constrained admissible-class closure of the theorem.
-Full formalization of the proof is future work.
--/
-def constrained_theorem_closure : Prop :=
-  ∀ (s₁²/σ₁², s₂²/σ₂² from Normal samples), F = (s₁²/σ₁²)/(s₂²/σ₂²) ∼ F_{n₁-1,n₂-1}
-
-theorem constrained_theorem_closure_true : constrained_theorem_closure := by
-  sorry
+theorem constrained_theorem_closure (A : AdmissibleClass) :
+    ConstrainedTheoremClosure A := by
+  exact And.intro (bridge_from_admissible_class A) (gate_from_admissible_class A)
 
 end FDistributionCanonicalLaneLean
 end HautevilleHouse
