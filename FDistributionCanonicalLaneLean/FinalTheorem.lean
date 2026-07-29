@@ -1,13 +1,13 @@
-import FDistributionCanonicalLaneLean.GateLemmas
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace FDistributionCanonicalLaneLean
 
-def ConstrainedTheoremClosure (A : AdmissibleClass) : Prop :=
+def ConstrainedFDistributionClosure (A : AdmissibleClass) : Prop :=
   bridgeClosed A ∧ gateClosed A
 
-theorem constrained_theorem_closure (A : AdmissibleClass) :
-    ConstrainedTheoremClosure A := by
+theorem constrained_f_distribution_endgame (A : AdmissibleClass) :
+    ConstrainedFDistributionClosure A := by
   exact And.intro (bridge_from_admissible_class A) (gate_from_admissible_class A)
 
 end FDistributionCanonicalLaneLean
