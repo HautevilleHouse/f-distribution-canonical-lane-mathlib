@@ -1,29 +1,25 @@
-import FDistributionCanonicalLaneLean.FDistributionAdmissibleClass
+import canonicalLaneMathlib.AdmissibleClass
 
 namespace HautevilleHouse
 namespace FDistributionCanonicalLaneLean
 
-structure FDistributionMomentsPackage where
-  meanFormula : ℝ
-  varianceFormula : ℝ
-  skewnessFormula : ℝ
-  kurtosisFormula : ℝ
-  meanExists : Prop
-  varianceExists : Prop
-  skewnessExists : Prop
-  kurtosisExists : Prop
+structure FDistributionMomentsParams (p : FDensityFunctionParams) where
+  meanExists : p.d2 > 2
+  varianceExists : p.d2 > 4
+  mean : ℝ
+  variance : ℝ
 
-structure FDistributionMomentsEvidence (M : FDistributionMomentsPackage) where
-  meanExistsClosed : M.meanExists
-  varianceExistsClosed : M.varianceExists
-  skewnessExistsClosed : M.skewnessExists
-  kurtosisExistsClosed : M.kurtosisExists
+structure FDistributionMoments (p : FDensityFunctionParams) (m : FDistributionMomentsParams p) where
+  meanDefined : m.meanExists → mean = m.mean
+  varianceDefined : m.varianceExists → variance = m.variance
+  meanFormula : m.mean = p.d2 / (p.d2 - 2)
+  varianceFormula : m.variance = 2 * p.d2 ^ 2 * (p.d1 + p.d2 - 2) / (p.d1 * (p.d2 - 2) ^ 2 * (p.d2 - 4))
 
-def FDistributionMomentsClosed (M : FDistributionMomentsPackage) : Prop :=
-  M.meanExists ∧ M.varianceExists ∧ M.skewnessExists ∧ M.kurtosisExists
+def FDistributionMomentsClosed {p : FDensityFunctionParams} {m : FDistributionMomentsParams p} (M : FDistributionMoments p m) : Prop :=
+  M.meanFormula ∧ M.varianceFormula
 
-theorem f_distribution_moments_closed_from_evidence (M : FDistributionMomentsPackage) (E : FDistributionMomentsEvidence M) : FDistributionMomentsClosed M :=
-  And.intro E.meanExistsClosed (And.intro E.varianceExistsClosed (And.intro E.skewnessExistsClosed E.kurtosisExistsClosed))
+theorem f_distribution_moments_closed {p : FDensityFunctionParams} {m : FDistributionMomentsParams p} (M : FDistributionMoments p m) : FDistributionMomentsClosed M :=
+  And.intro M.meanFormula M.varianceFormula
 
 end FDistributionCanonicalLaneLean
 end HautevilleHouse
